@@ -33,32 +33,6 @@ Grafy $G\_1=(V\_1, E\_1)$ oraz $G\_2=(V\_2, E\_2)$ nazywamy **izomorficznymi**, 
 * A jeśli możemy odpowiedzieć twierdząco na wszystkie cztery powyższe pytania, to wykresy są izomorficzne. Innymi słowy, są to równoważne wykresy, tylko w różnych formach.
 > **Zastosowania:** Rozpoznawanie izomorfizmu grafów ma znaczenie m.in. w chemii (porównywanie struktur cząsteczek), przy wyszukiwaniu patentów czy porównywaniu schematów sieci. **Uwaga:** Nie jest znany efektywny, wielomianowy algorytm stwierdzania izomorficzności dwóch dowolnych grafów – problem ten leży w klasie NP i wciąż nie wiadomo, czy jest NP-zupełny. Mimo to praktycznie, dla wielu klas grafów istnieją sprawne metody porównywania.
 
-## Podgrafy i grafy indukowane
-
-**Podgraf** grafu $G = (V, E)$ to graf $H = (V', E')$ taki, że $V' \subseteq V$ oraz $E' \subseteq E$. Innymi słowy, podgraf zawiera pewien podzbiór wierzchołków oryginalnego grafu oraz pewien podzbiór jego krawędzi.
-
-**Podgraf indukowany** przez podzbiór wierzchołków $S \subseteq V$ to podgraf zawierający wszystkie wierzchołki z $S$ oraz *wszystkie* krawędzie oryginalnego grafu $G$, które łączą pary wierzchołków z $S$. Podgraf indukowany jest jednoznacznie wyznaczony przez zbiór $S$ – dodanie jakiejkolwiek krawędzi więcej spowodowałoby, że nie jest już indukowany przez samo $S$, a pominięcie jakiejkolwiek krawędzi łączącej wierzchołki z $S$ oznaczałoby, że nie jest maksymalny. Podgraf nieindukowany może zawierać tylko niektóre z krawędzi między wierzchołkami $S$.
-
-> **Przykład:** Rozważmy graf $G$ będący kwadratem (cztery wierzchołki $a,b,c,d$ połączone w cykl). Podgrafem $G'$ na wierzchołkach ${a, b, c}$ może być np. ścieżka $a$–$b$–$c$ (dwie krawędzie spośród możliwych). Natomiast **podgraf indukowany** na wierzchołkach ${a, b, c}$ zawiera oprócz nich wszystkie krawędzie z $G$ mające końce w ${a, b, c}$. W oryginalnym grafie krawędziami takimi są $a$–$b$ oraz $b$–$c$, więc podgraf indukowany to dokładnie ścieżka $a$–$b$–$c$. (Innej krawędzi między tymi wierzchołkami w $G$ nie było, więc w tym wypadku akurat oba podgrafy się pokrywają.)
-
-## Operacje na grafach
-
-Na grafach definiuje się szereg operacji tworzących z nich nowe grafy:
-
-* **Suma grafów $G\_1 \cup G\_2$:** graf, którego zbiorem wierzchołków jest suma zbiorów $V\_1 \cup V\_2$, a zbiorem krawędzi – suma $E\_1 \cup E\_2$. Intuicyjnie łączy dwa grafy, traktując je jako rozłączne (jeśli miały wspólne wierzchołki, w sumie traktuje się ich dwie kopie jako jeden wierzchołek).
-
-* **Odjęcie krawędzi $G - e$:** usuwa z grafu $G$ krawędź $e$ (jeśli istnieje), pozostawiając resztę grafu bez zmian.
-
-* **Odjęcie wierzchołka $G - v$:** usuwa wierzchołek $v$ wraz ze wszystkimi krawędziami incydentnymi z $v$. Wynikowy graf ma zbiór wierzchołków $V \setminus {v}$ i krawędzie $E$ bez tych incydentnych z $v$.
-
-* **Ściągnięcie krawędzi $G \setminus e$ (kontrakcja):** usuwa krawędź $e={u,v}$ z grafu i **utożsamia** (scala) jej końce $u$ i $v$ w jeden wierzchołek. Wszystkie inne krawędzie dawniej incydentne z $u$ lub $v$ stają się incydentne z nowym połączonym wierzchołkiem. (Operacja ta zmniejsza liczbę wierzchołków o 1.)
-
-* **Dodanie wierzchołka $G + v$:** do grafu $G$ dodajemy nowy wierzchołek $v$ (nieistniejący wcześniej w $V$) oraz opcjonalnie nowe krawędzie łączące go z wybranymi wierzchołkami oryginalnego grafu. Szczególnym przypadkiem jest dodanie **uniwersalnego** wierzchołka – dołączenie $v$ połączonego krawędziami ze *wszystkimi* dotychczasowymi wierzchołkami.
-
-* **Dopełnienie grafu $G'$:** graf na tym samym zbiorze wierzchołków co $G$, w którym krawędź istnieje **tylko** tam, gdzie nie było jej w $G$. Formalnie, $G'$ ma zbiór wierzchołków $V$, a zbiór krawędzi to $E' = {{v,w}: v\neq w, {v,w}\notin E}$ (dla grafu prostego nieskierowanego).
-
-* **Iloczyn kartezjański grafów $G\_1 \times G\_2$:** graf, w którym zbiór wierzchołków stanowi iloczyn kartezjański $V\_1 \times V\_2$, a dwa wierzchołki $(v\_i, w\_j)$ oraz $(v\_k, w\_l)$ są połączone krawędzią wtedy, gdy $i=k$ i ${w\_j, w\_l} \in E\_2$, *lub* $j=l$ i ${v\_i, v\_k} \in E\_1$. Intuicyjnie jest to graf, w którym budujemy “kratkę” łączącą dwa grafy: kopie pierwszego są powielone dla każdego wierzchołka drugiego grafu, a połączenia między kopiami odpowiadają krawędziom drugiego grafu, i vice versa.
-
 ## Ważne rodzaje grafów
 
 Poniżej zebrano podstawowe rodziny grafów wraz z ich oznaczeniami i charakterystykami (zakładamy grafy proste, bez pętli, jeśli nie zaznaczono inaczej):
@@ -83,41 +57,6 @@ Poniżej zebrano podstawowe rodziny grafów wraz z ich oznaczeniami i charaktery
 
 * **Graf Petersena** – słynny 3-regularny graf na 10 wierzchołkach i 15 krawędziach. Nie jest planarny i ma wiele ciekawych własności (np. brak cyklu Hamiltona). Często służy jako kontrprzykład w teorii grafów. Stanowi przykład grafu regularnego, który nie jest dwudzielny ani planarny.
 
-*(Wymienione nazwy rodzin grafów warto kojarzyć z ich charakterystycznymi własnościami, jednak do podstawowego zakresu egzaminacyjnego należy głównie umiejętność rozpoznania i podania parametrów grafów takich jak $N\_n$, $K\_n$, $K\_{m,n}$, $P\_n$, $C\_n$, ewentualnie $W\_n$.)*
-
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-## Reprezentacje grafów
-
-Graf można zapisać w pamięci komputera lub na papierze na różne sposoby – wybór **reprezentacji** wpływa na efektywność operacji i zużycie pamięci. Najważniejsze standardowe reprezentacje to:
-
-* **Macierz sąsiedztwa:** dla grafu o $n$ wierzchołkach jest to kwadratowa macierz $A$ rozmiaru $n\times n$, gdzie na pozycji $(i,j)$ zapisujemy:
-
-  * 1, jeśli między wierzchołkiem $i$ a $j$ istnieje krawędź;
-  * 0, jeśli brak krawędzi między $i$ i $j$;
-  * (dla grafów z pętlami: zwykle przyjmuje się wartość 2 na diagonali w miejscu pętli $(i,i)$).
-
-  Macierz sąsiedztwa grafu nieskierowanego jest **symetryczna** względem diagonali ($A = A^T$). Dla grafu skierowanego macierz może być asymetryczna – jedynki w wierszu $i$ wskazują na krawędzie wychodzące z wierzchołka $i$, a jedynki w kolumnie $i$ – na krawędzie wchodzące do $i$. W macierzy sąsiedztwa **grafu prostego** wszystkie komórki na głównej przekątnej mają 0 (brak pętli).
-
-  *Koszt pamięci:* Macierz sąsiedztwa zajmuje $Θ(n^2)$ pamięci niezależnie od liczby krawędzi. Jest to wydajne przy grafach **gęstych** (gdy $m$ jest rzędu $n^2$). 
-  
-  Niektóre operacje, np. sprawdzenie istnienia krawędzi między danymi wierzchołkami, są w tej reprezentacji bardzo szybkie (jedno indeksowanie tablicy).
-
-* **Macierz incydencji:** tablica $n \times m$, w której wiersz odpowiada wierzchołkowi, a kolumna – krawędzi. W przypadku grafu nieskierowanego w komórce $(v, e)$ wpisujemy 1, jeśli krawędź $e$ jest incydentna z wierzchołkiem $v$, w przeciwnym razie 0. Dla grafu skierowanego przyjmuje się np. konwencję: 1 jeśli krawędź *wchodzi* do $v$, –1 jeśli *wychodzi* z $v$, 0 jeśli $v$ nie leży na tej krawędzi. Każda kolumna ma zatem dwie jedynki (lub jedynkę i minus jedynkę dla digrafu) – wskazujące końce danej krawędzi.
-
-  *Koszt pamięci:* Macierz incydencji zajmuje $Θ(n \cdot m)$ komórek, co dla grafów rzadkich ($m = O(n)$) daje rząd $O(n^2)$ – zwykle mniej wydajny niż lista sąsiedztwa, a dla grafów gęstych ($m = Θ(n^2)$) rzędu $Θ(n^3)$, co czyni tę reprezentację bardzo kosztowną pamięciowo.
-
-* **Lista sąsiedztwa:** dla każdego wierzchołka przechowujemy listę wszystkich wierzchołków, z którymi jest bezpośrednio połączony krawędzią. Implementacyjnie często jest to tablica list: indeks tablicy odpowiada etykiecie wierzchołka, a pod nim lista sąsiadów. Dla grafu skierowanego lista sąsiedztwa zwykle zawiera **następników** (wierzchołki, do których wychodzą krawędzie z bieżącego). Można też przechowywać osobno listy poprzedników (dla krawędzi wchodzących).
-
-  *Koszt pamięci:* Lista sąsiedztwa zajmuje $Θ(n + m)$ pamięci – mały narzut na wierzchołki plus po jednym elemencie na każdą krawędź (lub dwa dla nieskierowanych, bo każda krawędź pojawia się na liście dwóch końców). Dla grafów **rzadkich** ($m = O(n)$) jest znacznie oszczędniejsza niż macierz sąsiedztwa (koszt liniowy zamiast kwadratowego).
-
-* **Lista krawędzi:** lista (lub zbiór) wszystkich krawędzi grafu, zwykle zapisanych jako pary (dla grafu nieskierowanego) lub uporządkowane pary (dla skierowanego) wierzchołków. Często przedstawiana jako tabela dwóch kolumn: każda pozycja to $(u, v)$ oznaczające krawędź między $u$ a $v$. Ta reprezentacja jest prosta i czytelna dla człowieka oraz wygodna do zapisu tekstowego (np. każda krawędź w oddzielnej linii). Sprawdza się też dla grafów dynamicznie rosnących – łatwo dopisać nowy wiersz reprezentujący dodaną krawędź.
-
-  *Koszt pamięci:* $Θ(m)$ par wierzchołków. Trudniej jednak uzyskać z takiej listy np. listę sąsiadów danego wierzchołka bez pełnego przeglądu listy.
-
-> **Porównanie reprezentacji:** Macierz sąsiedztwa jest korzystna dla grafów gęstych – ma stały czas dostępu do informacji o każdej potencjalnej krawędzi, ale zawsze zajmuje $n^2$ komórek pamięci, nawet jeśli krawędzi jest mało. Lista sąsiedztwa adaptuje się do wielkości grafu – zajmuje pamięć rzędu $n+m$ (dla małej liczby krawędzi jest bardzo oszczędna), jednak pewne operacje (np. sprawdzenie istnienia konkretnej krawędzi) mogą wymagać przeszukania listy i trwać dłużej niż w macierzy. Macierz incydencji jest rzadziej używana – bywa przydatna w kontekstach algebraicznych (np. teoria grafów algebraiczna), ale pamięciowo jest najmniej efektywna. Listy krawędzi są prostym sposobem zapisu (np. w plikach) i ułatwiają iterowanie po wszystkich krawędziach, lecz nie pozwalają szybko odczytać sąsiadów danego wierzchołka bez dodatkowych struktur pomocniczych.
-
 ## Ścieżki i cykle w grafach
 
 **Ścieżka (droga)** w grafie to sekwencja wierzchołków $(v\_0, v\_1, ..., v\_k)$ taka, że każdy kolejny wierzchołek jest połączony krawędzią z poprzednim. Formalnie, istnieje ciąg krawędzi $(e\_1, e\_2, ..., e\_k)$, gdzie $e\_i = {v\_{i-1}, v\_i}$ dla $i=1,...,k$. Ścieżkę można także określić jako **naprzemienny ciąg wierzchołków i krawędzi** rozpoczynający i kończący się wierzchołkiem: $v\_0, e\_1, v\_1, e\_2, ..., e\_k, v\_k$, gdzie każde $e\_i$ łączy $v\_{i-1}$ z $v\_i$. Długością ścieżki nazywamy liczbę występujących w niej krawędzi (przyjmujemy, że ścieżka długości 0 to pojedynczy wierzchołek bez krawędzi).
@@ -126,16 +65,17 @@ Graf można zapisać w pamięci komputera lub na papierze na różne sposoby –
 
 **Cykl** to zamknięta ścieżka – ścieżka, w której $v\_0 = v\_k$ (czyli początek i koniec to ten sam wierzchołek), oraz która ma co najmniej 3 krawędzie. Analogicznie jak wyżej, **cykl prosty** nie powtarza krawędzi, a **cykl elementarny** – nie powtarza żadnego wierzchołka poza początkowo-końcowym. **Obwód** grafu to długość najkrótszego cyklu w grafie (jeśli graf nie zawiera żadnego cyklu, mówimy że obwód jest nieskończony).
 
-> **Uwaga:** W wielu zadaniach dopuszcza się określenie “ścieżka” jako synonim ścieżki prostej. W niniejszych notatkach przez ścieżkę zwykle będziemy rozumieć ścieżkę prostą, chyba że zaznaczono inaczej.
-
 ## Spójność grafu
-
 Graf niepusty nazywamy **spójnym**, jeśli każde dwa jego różne wierzchołki można połączyć pewną ścieżką. Równoważnie: graf jest spójny, jeśli nie da się jego wierzchołków podzielić na dwa niepuste zbiory tak, by *brakowało* krawędzi między tymi dwoma częściami (tzn. graf nie jest sumą dwóch niepołączonych grafów). 
 **Składowa spójna** to maksymalny (największy) podgraf spójny grafu – innymi słowy, spójna “część” grafu zawierająca pewien podzbiór wierzchołków. Każdy graf można jednoznacznie rozłożyć na swoje składowe spójne; liczbę składowych spójnych oznaczamy $c(G)$. Graf spójny ma $c(G)=1$. Graf całkowicie niespójny (pusty) na $n$ wierzchołkach ma $c(G)=n$.
 
-W przypadku **grafów skierowanych** rozróżniamy spójność *słabą* i *silną*. Graf **silnie spójny** (silnie spójny skierowany) to taki digraf, w którym dla każdej uporządkowanej pary **różnych** wierzchołków $u, v$ istnieje ścieżka *skierowana* od $u$ do $v$. Innymi słowy, z każdego wierzchołka da się dosć do każdego innego, *uwzględniając kierunki łuków*. Graf **słabo spójny** to graf skierowany, który jest spójny jeśli **pominąć kierunki** krawędzi, czyli zastąpić wszystkie łuki krawędziami nieskierowanymi – wtedy powstały graf nieskierowany jest spójny. Silna spójność pociąga za sobą słabą (graf silnie spójny jest oczywiście spójny po “zapomnieniu” kierunków), ale nie odwrotnie. **Składowe silnie spójne** i **składowe słabo spójne** definiuje się analogicznie jak w przypadku grafów nieskierowanych (maksymalne podgrafy silnie, względnie słabo spójne).
+W przypadku **grafów skierowanych** rozróżniamy spójność *słabą* i *silną*.
 
-Przykładem grafu, który jest słabo spójny, lecz nie jest   silnie spójny, jest skierowane drzewo (tzw. arborescencja) – np. wszystkie krawędzie skierowane “w dół” od korzenia. Taki graf jako nieskierowany jest spójny (to zwykłe drzewo), ale nie ma drogi skierowanej od liścia do innego liścia.
+Graf **silnie spójny** (silnie spójny skierowany) to taki digraf, w którym dla każdej uporządkowanej pary **różnych** wierzchołków $u, v$ istnieje ścieżka *skierowana* od $u$ do $v$. Innymi słowy, z każdego wierzchołka da się dosć do każdego innego, *uwzględniając kierunki łuków*. 
+
+Graf **słabo spójny** to graf skierowany, który jest spójny jeśli **pominąć kierunki** krawędzi, czyli zastąpić wszystkie łuki krawędziami nieskierowanymi – wtedy powstały graf nieskierowany jest spójny. Silna spójność pociąga za sobą słabą (graf silnie spójny jest oczywiście spójny po “zapomnieniu” kierunków), ale nie odwrotnie. 
+
+**Składowe silnie spójne** i **składowe słabo spójne** definiuje się analogicznie jak w przypadku grafów nieskierowanych (maksymalne podgrafy silnie, względnie słabo spójne).
 
 **Most** (lub **krawędź artykulacji**, **krawędź rozspajająca**) to krawędź, której usunięcie zwiększa liczbę składowych spójnych grafu. Innymi słowy, jest to krawędź, której usunięcie rozłącza graf – stanowi ona jedyne połączenie między dwoma fragmentami grafu.
 
@@ -145,10 +85,7 @@ Przykładem grafu, który jest słabo spójny, lecz nie jest   silnie spójny, j
 
 **Spójność wierzchołkowa** grafu spójnego $G$ to najmniejsza liczba wierzchołków, jaką należy usunąć (z krawędziami incydentnymi), aby graf przestał być spójny. Oznaczamy ją $\kappa(G)$. Innymi słowy, $\kappa(G)$ to rozmiar najmniejszego *zbioru rozdzielającego* wierzchołków. Jeżeli $\kappa(G) \ge k$, to graf jest nazywany **$k$-spójnym (wierzchołkowo)**. Np. $C\_4$ jest 2-spójny (bo usunięcie jednego wierzchołka wciąż pozostawia graf spójnym – powstaje ścieżka $P\_3$), ale nie jest 3-spójny (usunięcie dwóch wierzchołków już zawsze rozspoi).
 
-> **Przykład zastosowania:** Pojęcia $\lambda(G)$ i $\kappa(G)$ mają znaczenie w projektowaniu sieci odpornych na awarie – określają ile połączeń lub węzłów musiałoby naraz ulec uszkodzeniu, by sieć przestała przekazywać informacje między pewnymi punktami. Sieci o wysokiej spójności są bardziej wytrzymałe na awarie.
-
 ## Grafy Eulerowskie
-
 **Cykl Eulera** to cykl, który przechodzi przez *każdą krawędź grafu dokładnie raz*. **Graf eulerowski** to graf, który *posiada* cykl Eulera. Mówi się obrazowo, że taki graf da się “narysować jedną kreską”, wracając do punktu startowego, nie podnosząc ołówka z papieru i nie rysując żadnej krawędzi więcej niż raz (nawiązanie do klasycznego problemu mostów Königsberga).
 
 **Ścieżka Eulera** (droga Eulera) to ścieżka przechodząca przez każdą krawędź grafu dokładnie raz (ale *niekoniecznie wracająca do punktu startu*). Graf posiadający ścieżkę Eulera nazywamy **pół-eulerowskim** (ślad Eulera istnieje, lecz nie jest cyklem).
@@ -323,54 +260,7 @@ Z twierdzenia Eulera wynikają dalsze ograniczenia: np. **dla prostego grafu pla
 * **Przykłady digrafów:** ważną klasą digrafów są **turnieje** – już wspomniane kompletne digrafy na $n$ wierzchołkach (każda para wierzchołków jest połączona jednym łukiem w jedną ze stron, jak mecz każdy z każdym). Turnieje są zawsze słabo spójne; co więcej, znane jest twierdzenie Rédei’ego: każdy turniej zawiera *ścieżkę Hamiltona*. Mocniejsze: **każdy silnie spójny turniej jest Hamiltonowski** (istnieje w nim cykl Hamiltona). W ogólności, problem Hamiltonowski dla ogólnych digrafów jest trudny, ale np. **twierdzenie Ghouila-Harary’ego**: jeśli spójny turniej (digraf pełny) ma pewną własność transitivity, to jest Hamiltonowski, etc.
 
 ## 7. Tematy dodatkowe
-
-**Iloczyn kartezjański grafów:** dla dwóch grafów $G\_1=(V\_1,E\_1)$ oraz $G\_2=(V\_2,E\_2)$, ich iloczyn kartezjański $G = G\_1 \times G\_2$ zdefiniowano w sekcji 1. Tutaj dodajmy jego podstawowe własności:
-
 * *Stopnie wierzchołków:* w iloczynie kartezjańskim $\deg\_{G\_1 \times G\_2}(u,v) = \deg\_{G\_1}(u) + \deg\_{G\_2}(v)$. Wynika to z faktu, że z wierzchołka $(u,v)$ wychodzą krawędzie: wszystkie ze zmianą drugiej współrzędnej (tyle, ile ma $v$ sąsiadów w $G\_2$) oraz wszystkie ze zmianą pierwszej współrzędnej (tyle, ile $u$ ma sąsiadów w $G\_1$).
 * *Odległości:* odległość między dwoma wierzchołkami $(u,v)$ i $(u',v')$ w $G\_1 \times G\_2$ okazuje się sumą odległości w składowych: $d\big((u,v), (u',v')\big) = d\_{G\_1}(u,u') + d\_{G\_2}(v,v')$. W szczególności **średnica** (maksymalna odległość między parami wierzchołków) spełnia $\mathrm{diam}(G\_1 \times G\_2) = \mathrm{diam}(G\_1) + \mathrm{diam}(G\_2)$ – najdalsze pary wierzchołków w iloczynie to kombinacje najdalszych par z każdego czynnika.
 
-**Metryka sieciowa w grafach:** W grafach definiujemy kilka pojęć mierzących „odległości” w sieci (przy założeniu spójności w danej analizowanej składowej):
-* *Odległość $d(u,v)$:* długość najkrótszej ścieżki między wierzchołkami $u$ i $v$. Jeśli wierzchołki są w różnych składowych, można przyjąć $d(u,v)=\infty$.
-* *Ekscentryczność $e(v)$:* maksymalna odległość od wierzchołka $v$ do dowolnego innego wierzchołka grafu (tj. $e(v) = \max\_{u\in V}d(v,u)$). Mówi jak „daleko” w najgorszym razie jest $v$ od reszty.
-* *Promień grafu $r(G)$:* najmniejsza ekscentryczność w grafie, $r(G) = \min\_{v\in V} e(v)$. Jest to odległość od najbardziej centralnego wierzchołka do reszty – czyli minimalny zasięg, w jakim można „objąć” wszystkie wierzchołki z jednego miejsca.
-* *Średnica grafu $\mathrm{diam}(G)$:* największa ekscentryczność, $\mathrm{diam}(G) = \max\_{v\in V} e(v)$, czyli najdłuższa odległość jaka występuje między jakąkolwiek parą wierzchołków.
-* *Centrum grafu:* zbiór wierzchołków o ekscentryczności równej promieniowi (${v: e(v)=r(G)}$). Wierzchołki centralne to te, które są minimalnie oddalone od wszystkich pozostałych. Dla drzew centrum to pojedynczy wierzchołek lub dwa wierzchołki (gdy drzewo ma parzystą średnicę – leżące w środku najdłuższej ścieżki; por. twierdzenie Jordana wcześniej).
-
-**Algorytmy grafowe – przeszukiwanie grafu:** wiele algorytmów operuje na grafach poprzez **przeszukiwanie** – systematyczne odwiedzanie wierzchołków i krawędzi. Istnieją dwie podstawowe strategie:
-
-* **BFS (Breadth-First Search, przeszukiwanie wszerz):** rozpoczyna od zadanego wierzchołka startowego i odwiedza najpierw wszystkich jego sąsiadów, potem sąsiadów sąsiadów itd., warstwami. Implementacja BFS używa kolejki: najpierw do kolejki trafia start, następnie w pętli zdejmujemy z kolejki wierzchołek, odwiedzamy go i wszystkich nieodwiedzonych sąsiadów dodajemy do kolejki. BFS wyznacza tzw. *drzewo przeszukiwania* (spanning tree) warstwowe. **Złożoność BFS to $O(|V|+|E|)$** – liniowa względem rozmiaru grafu. Zastosowania BFS: wyznaczanie najkrótszych ścieżek w grafach **nieważonych** (od startu do wszystkich wierzchołków), sprawdzanie spójności (osiągalności wierzchołków), znajdowanie cykli parzystych (graf jest bipartytowy $\iff$ BFS nie wykryje konfliktu dwukolorowania warstw) itp.
-
-* **DFS (Depth-First Search, przeszukiwanie w głąb):** strategia odwrotna do BFS – zagłębia się jak najdalej w graf od startu, cofa kiedy napotka już odwiedzony wierzchołek lub brak sąsiadów do eksploracji. Implementacja zwykle rekurencyjna lub ze stosem: zaczynamy od startu, odwiedzamy rekurencyjnie jego pierwszego nieodwiedzonego sąsiada itd., wracamy dopiero gdy nie ma gdzie pójść. DFS również tworzy drzewo przeszukiwania (a dokładniej *las*, jeśli graf nie jest spójny, bo możemy uruchomić DFS ponownie z kolejnego nieodwiedzonego wierzchołka). **Złożoność DFS wynosi $O(|V|+|E|)$**. Zastosowania DFS: wykrywanie cykli (np. *krawędź wsteczna* odkryta podczas DFS świadczy o istnieniu cyklu), topologiczne sortowanie DAG-ów (poprzez kolejność przetworzenia wierzchołków – patrz niżej), znajdowanie mostów i punktów artykulacji (na podstawie czasów odwiedzenia i low-link values), wyznaczanie silnych składowych (algorytm Tarjana używa jednego DFS, Kosaraju dwóch DFS) itd.
-
-* **Sortowanie topologiczne:** dotyczy **acyklicznych** grafów skierowanych (DAG – Directed Acyclic Graph). Celem jest linearny porządek wierzchołków zgodny ze wszystkimi relacjami skierowanymi (jeśli istnieje łuk $u\to v$, to w uporządkowaniu $u$ ma być przed $v$). Taki porządek istnieje wtedy i tylko wtedy, gdy graf jest acykliczny. Można go znaleźć w czasie $O(|V|+|E|)$. Jedna metoda to wykonywanie DFS i zapisywanie wierzchołków w momencie *zakończenia* odwiedzenia (post-order) – kolejność malejąca względem tych czasów zakończenia daje sortowanie topologiczne. Inny algorytm (Kahna) używa wielokrotnego wybierania wierzchołków o stopniu wejściowym 0. Sortowanie topologiczne jest używane np. do planowania zadań, rozwiązywania zależności (kompilacja źródeł), czy rozpoznawania czy dany digraf zawiera cykl (jeśli nie da się go w pełni posortować).
-
-**Minimalne drzewo rozpinające (MST):** dla grafu spójnego *ważonego* (z wagą na każdej krawędzi) często szukamy podzbioru krawędzi tworzących drzewo spinające o minimalnej sumie wag. Klasyczne algorytmy MST to:
-
-* *Algorytm Kruskala:* sortuje wszystkie krawędzie grafu rosnąco po wagach i dodaje je kolejno do wyniku, **pomijając** te, które tworzyłyby cykl z już dodanymi. W praktyce sprawdzanie cyklu robi się przez strukturę *Union-Find* (złączeń i znajdowania przedstawiciela zbioru) – dołączamy krawędź jeśli łączy dwa drzewa (dwie różne komponenty bieżącego lasu). Algorytm kończy się gdy dodano $n-1$ krawędzi. Złożoność z sortowaniem $O(E\log E)$, dominowaną przez sortowanie (Union-Find działa praktycznie w czasie $O(E\alpha(V))\approx O(E)$). Kruskal dobrze sprawdza się przy rozproszonych grafach (mało wierzchołków, dużo krawędzi).
-* *Algorytm Prima:* startuje z dowolnego wierzchołka i rozbudowuje drzewo: w każdym kroku dodaje **najtańszą** krawędź wychodzącą z już zbudowanego drzewa do nowego wierzchołka. Implementacja wykorzystuje kolejkę priorytetową trzymającą krawędzie kandydujące. Złożoność $O(E\log V)$ (bo przy każdym dodaniu wierzchołka aktualizujemy priorytety krawędzi wychodzących). W praktyce Prim bywa wydajniejszy dla gęstych grafów (dużo wierzchołków).
-
-**Najkrótsze ścieżki w grafie:** to fundamentalny problem: znaleźć najkrótszą (minimalna waga lub liczba krawędzi) drogę między wybranymi wierzchołkami. Klasyczne algorytmy:
-
-* *BFS* – już omawiany – znajdujący najkrótsze ścieżki w grafie **nieważonym** (lub o jednakowej wadze każdej krawędzi). Po wykonaniu BFS z źródła $s$ mamy odległość $d(s,v)$ dla każdego osiągalnego $v$ (w liczbie skoków).
-
-* *Algorytm Dijkstry:* rozwiązuje problem najkrótszych ścieżek od źródła w grafie o **nieujemnych wagach**. Działa zachłannie podobnie do Prima: startuje z $s$, następnie iteracyjnie ustala najkrótszą odległość dla kolejnego wierzchołka (tego, do którego obecnie najtaniej dotrzeć) i *relaksuje* (aktualizuje) odległości sąsiadów tego wierzchołka. Implementacja z kopcem daje złożoność $O(E\log V)$. Jeżeli wagi są nieujemne, to w momencie zdejmowania wierzchołka z kolejki jego odległość jest finalna. Algorytm kończy po ustaleniu odległości do wszystkich wierzchołków (lub do zadanego celu).
-
-* *Algorytm Bellmana-Forda:* również oblicza najkrótsze ścieżki z zadanej startowej $s$, **pozwala jednak na krawędzie o wagach ujemnych** (byle nie było cyklu o sumie ujemnej dostępnego z $s$ – w przeciwnym razie odległości mogą maleć w nieskończoność). Idea: wykonujemy $n-1$ rund *relaksacji* wszystkich krawędzi (prób poprawy $d(u)$ przez $d(v)+w(v,u)$ dla każdej krawędzi $v\to u$). Po $n-1$ iteracjach odległości są najkrótsze, a dodatkowa $n$-ta iteracja wykryłaby ewentualny cykl ujemny (jeśli coś da się jeszcze poprawić). Złożoność $O(V\cdot E)$, co jest wolniejsze od Dijkstry dla dużych grafów, ale działa w ogólniejszych przypadkach (może służyć np. do znalezienia cyklu o ujemnej sumie wag, jeśli istnieje).
-
-* *Inne:* Warto wspomnieć, że problem najkrótszych ścieżek między *wszystkimi* parami wierzchołków rozwiązuje algorytm Floyda-Warshalla w czasie $O(V^3)$ albo np. wielokrotne odpalenie Dijkstry (gdy brak wag ujemnych) w $O(V\cdot E\log V)$. Istnieje także wiele wyspecjalizowanych algorytmów grafowych (znalezienie cyklu Eulera, cyklu Hamiltona – NP-trudne, znajdowanie skojarzeń, przepływy w sieciach, itp.), ale wykraczają one poza zakres tej notatki.
-
-
-
-
-## Kolorowanie grafów
-
-* **Kolorowanie wierzchołków:** przypisanie każdemu wierzchołkowi grafu pewnego koloru w taki sposób, by żadne dwa sąsiednie wierzchołki nie miały tego samego koloru. Minimalną liczbę kolorów potrzebną do prawidłowego pokolorowania wierzchołków grafu $G$ nazywamy **liczbą chromatyczną** $\chi(G)$. Jeśli $\chi(G)=k$, mówimy że graf jest *$k$-chromatyczny*. Przykłady: graf zerowy $N\_n$ (bez krawędzi) ma $\chi=1$, każdy graf dwudzielny niepusty $\chi=2$ (bo można dwoma kolorami pokolorować dwie strony), $K\_n$ ma $\chi = n$ (każdy wierzchołek musi otrzymać inny kolor), cykl parzysty $C\_{2m}$ jest 2-chromatyczny, a cykl nieparzysty $C\_{2m+1}$ – 3-chromatyczny (nie da się dwoma z powodu obecności nieparzystego cyklu). Nie istnieje prosty wzorzec dla grafów 3-chromatycznych – np. graf Petersena ma $\chi=3$ jako nietrywialny przykład.
-
-* **Kolorowanie krawędzi:** analogicznie możemy kolorować krawędzie tak, aby żadne dwie krawędzie incydentne (spotykające się w jakimś wierzchołku) nie miały tego samego koloru. Minimalna liczba kolorów potrzebna na takie kolorowanie to **indeks chromatyczny** grafu, oznaczany zwykle $\chi'(G)$ lub $\chi\_0(G)$. Przykład: krawędzie $K\_5$ wymagają 5 kolorów, a $K\_4$ tylko 3 (w ogólności pełny graf $K\_n$ ma $\chi' = n$ dla n nieparzystego i $\chi' = n-1$ dla parzystego – to wynik związany z problemem klasztoru i ułamaniem kompletu na mecze)\*\*.
-
-* **Twierdzenie o stopniach a kolorowaniu:** prosty, ale użyteczny fakt: dowolny graf $G$ można pokolorować wierzchołki w co najwyżej $\Delta(G)+1$ kolorach, gdzie $\Delta$ to maksymalny stopień wierzchołka. (Wystarczy użyć algorytmu zachłannego kolorowania, rozważając wierzchołki w pewnej kolejności – każdorazowo wolny jest co najmniej jeden kolor spośród $\Delta+1$). To ograniczenie można poprawić następująco: **twierdzenie Brooksa:** jeśli $G$ jest spójnym prostym grafem i nie jest kliką ($K\_n$) ani nieparzystym cyklem, a $\Delta(G)\ge 3$, to $\chi(G)\le \Delta(G)$. Innymi słowy, oprócz wyjątkowych przypadków kompletnych grafów i cykli, do pokolorowania grafu wystarczy tylu kolorów co wynosi maksymalny stopień. Przykładowo graf o strukturze gwiazdy $K\_{1,s}$ ma $\Delta = s$, ale $\chi=2$ (spełnia warunki Brooksa, bo nie jest kliką ani $C\_{2k+1}$).
-
-* **Twierdzenie Vizinga:** dotyczy kolorowania **krawędzi**. Mówi ono, że **dla każdego prostego grafu $G$ indeks chromatyczny spełnia $\Delta(G) \le \chi'(G) \le \Delta(G)+1$**. Innymi słowy, do pokolorowania krawędzi nigdy nie potrzeba więcej niż $\Delta+1$ kolorów, a dość często wystarcza dokładnie $\Delta$. Grafy, dla których $\chi' = \Delta$, nazywa się *grafami klasy 1*, a te gdzie $\chi' = \Delta+1$ – *grafami klasy 2*. Przykładowo $K\_5$ jest klasy 2 (trzeba 5 kolorów na 4), ale graf dwudzielny $K\_{m,n}$ zawsze jest klasy 1 – według twierdzenia Königa (1916) każdemu grafowi dwudzielnemu można pokolorować krawędzie w $\Delta$ kolorach.
-
-* **Kolorowanie map:** problem słynnego *kolorowania map* sprowadza się do kolorowania wierzchołków grafów planarnych (regiony na mapie reprezentuje się przez graf sąsiedztwa). Dla grafów planarnych obowiązują dodatkowe ograniczenia na $\chi$. Wiemy już, że w grafie planarnym musi istnieć wierzchołek stopnia $\le 5$ – na tej obserwacji opiera się **twierdzenie o 5 kolorach:** każdy prosty graf planarny da się pokolorować co najwyżej 5 kolorami. Dowód tego twierdzenia jest możliwy indukcją usuwając kolejno wierzchołki stopnia $\le 5$ i dodając z powrotem, dobierając dla nich pasujący kolor (jeśli w danej chwili wierzchołek ma pięciu sąsiadów o pięciu różnych kolorach, to jedna z par jego sąsiadów nie jest połączona krawędzią – zamiana kolorów u części z nich zwalnia kolor dla naszego wierzchołka). Natomiast **słynne twierdzenie o 4 kolorach** (Appel, Haken 1976) mówi, że **każdy graf planarny jest 4-kolorowalny**. Problem ten postawiono już w XIX wieku, jednak jego pełny dowód okazał się bardzo skomplikowany i był pierwszym dowodem matematycznym z istotnym użyciem komputera (sprawdzenie dużej liczby konfiguracji). Do dziś dowód 4-kolorowego twierdzenia jest przedmiotem zainteresowania (istnieją uproszczenia, lecz nadal bazują na sprawdzeniu komputerowym wielu przypadków).
 
