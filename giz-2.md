@@ -142,7 +142,6 @@ Z powyższych własności wynika kilka ważnych faktów o drzewach:
 **Drzewa etykietowane i kod Prüfera:** Drzewo *etykietowane* na $n$ wierzchołkach to takie, w którym wierzchołki mają unikalne etykiety (np. liczby $1,...,n$).
  **Twierdzenie Cayleya:** istnieje $n^{,n-2}$ różnych etykietowanych drzew na $n$ wierzchołkach. To klasyczny wynik teorii grafów, którego dowód opiera się na tzw. *kodzie Prüfera*.
   **Kod Prüfera** to sposób jednoczesnego policzenia i zakodowania wszystkich drzewa etykietowanych: każdemu drzewu przyporządkowuje się w bijektywny sposób ciąg $(n-2)$ liczb z zakresu $1...n$, co pokazuje, że liczba drzew wynosi $n^{,n-2}$.
-*(Kod Prüfera oraz wynik Cayleya wykraczają poza podstawowy zakres – nie są wymagane na najniższą ocenę, ale stanowią ciekawe uzupełnienie teorii drzew.)*
 
 **Drzewa ukorzenione i binarne:** Często przydatne jest wyróżnienie w drzewie jednego wierzchołka jako **korzenia**. *Drzewo ukorzenione* to po prostu drzewo z takim wyróżnionym wierzchołkiem. Korzeń wprowadza pojęcia poziomów, rodziców i dzieci – w drzewie ukorzenionym możemy mówić, że jeden wierzchołek jest **potomkiem** (dzieckiem, wnukiem, itd.) innego. **Drzewo binarne** to z kolei drzewo (zwykle ukorzenione), w którym każdy węzeł może mieć najwyżej dwoje dzieci (lewe i prawe). Drzewa binarne odgrywają istotną rolę w informatyce (np. drzewa poszukiwań binarnych BST, kopce, drzewo Huffmana), ale szczegóły tych zastosowań nie są wymagane na najniższą ocenę.
 
@@ -161,83 +160,13 @@ Z powyższych własności wynika kilka ważnych faktów o drzewach:
 
 * **Drzewo uporządkowane:** drzewo $d$-arne, w którym dzieci każdego węzła są ułożone w określonym porządku (np. od lewej do prawej). W drzewie uporządkowanym możemy mówić np. o „pierwszym” i „ostatnim” dziecku danego węzła. Standardowy *porządek leksykograficzny* węzłów drzewa uporządkowanego to np. porządek poziomami od lewej do prawej.
 
-* **Porządki przeszukiwania drzewa:** dla drzew ukorzenionych definiuje się trzy podstawowe sposoby odwiedzania węzłów:
-  * *Pre-order (porządek przedorderowy)* – najpierw odwiedzamy (przetwarzamy) węzeł bieżący, następnie rekurencyjnie jego lewe poddrzewo i prawe poddrzewo.
-  * *In-order (porządek w środku)* – najpierw rekurencyjnie przetwarzamy lewe poddrzewo, potem bieżący węzeł, następnie prawe poddrzewo.
-  * *Post-order (porządek poorderowy)* – najpierw rekurencyjnie lewe i prawe poddrzewo, a na końcu węzeł bieżący.
-
-  Dla przykładu, pre-order wydrukuje zawartość drzewa zaczynając od korzenia i przechodząc w głąb, zawsze najpierw węzeł, potem jego dzieci. In-order dla drzewa binarnego da posortowaną kolejność kluczy, jeśli drzewo spełnia własność BST (poszukiwań binarnych). Post-order często używany jest przy usuwaniu drzewa (najpierw usuń dzieci, potem węzeł). Przykład – dla drzewa binarnego z korzeniem A, lewym dzieckiem B i prawym C: pre-order: A, B, C; in-order: B, A, C; post-order: B, C, A.
-
-## Przeszukiwanie grafu (BFS i DFS)
-
-Wiele algorytmów na grafach polega na systematycznym odwiedzaniu wszystkich wierzchołków i krawędzi w pewnym zorganizowanym porządku. Dwa podstawowe schematy **przeszukiwania grafu** to **przeszukiwanie wszerz** (BFS – *Breadth-First Search*) i **przeszukiwanie w głąb** (DFS – *Depth-First Search*). Oba algorytmy przyjmują graf (np. w postaci list sąsiedztwa) oraz ewentualnie wyróżniony wierzchołek startowy.
-
-### Algorytm BFS (przeszukiwanie wszerz)
-
-BFS korzysta z kolejki (FIFO) i odkrywa graf poziomami, **równomiernie we wszystkich kierunkach** od wierzchołka startowego, według rosnącej odległości. Intuicyjnie, BFS najpierw odwiedza wszystkich sąsiadów startowego, potem sąsiadów tych sąsiadów, itd., tworząc warstwami tzw. *drzewo BFS*.
-
-**Schemat:**
-
-1. Oznacz wszystkie wierzchołki jako **nieodwiedzone** (białe). Ustaw odległości $d$ od startowego $s$ na nieskończoność (lub dużą liczbę), poza $d(s)=0$. Przygotuj pustą kolejkę.
-2. Oznacz startowy wierzchołek $s$ jako odwiedzony (szary) i umieść go w kolejce.
-3. Dopóki kolejka nie jest pusta:
-
-   * zdejmij z kolejki wierzchołek $u$,
-   * *przetwórz* $u$ (np. wypisz lub odnotuj, że został odwiedzony),
-   * dla każdego sąsiada $v$ wierzchołka $u$: jeśli $v$ jest jeszcze nieodwiedzony (biały), to oznacz go jako odwiedzony (szary), zapisz jego odległość $d(v) = d(u)+1$ i poprzednika $p(v)=u$ i dodaj $v$ do kolejki.
-   * po przetworzeniu wszystkich sąsiadów $u$, oznacz $u$ jako całkowicie przetworzony (czarny).
-4. Koniec – gdy kolejka się opróżni, wszystkie wierzchołki osiągalne ze startowego zostały odwiedzone. Jeśli istnieją wierzchołki nieodwiedzone (graf niespójny), można wznowić BFS z któregoś z nich jako nowego startu, aby odwiedzić kolejną składową.
-
-**Złożoność:** Każda krawędź i wierzchołek jest odwiedzana stałą liczbę razy, więc czas działania BFS to $O(|V| + |E|)$ – liniowy względem rozmiaru grafu.
-
-**Własności:** BFS oblicza **najkrótsze odległości** od startowego wierzchołka $s$ do wszystkich innych (w grafie *nieważonym*) – po zakończeniu algorytmu dla każdego odwiedzonego wierzchołka $v$ odległość $d(v)$ jest równa długości najkrótszej ścieżki z $s$ do $v$. Ponadto z relacji poprzedników $p(v)$ tworzy się **drzewo rozpinające** (a właściwie las dla niespójnego grafu) – tzw. *drzewo BFS*, które zawiera krawędzie ${p(v), v}$ dla każdego odwiedzonego $v \neq s$. Krawędzie grafu możemy podzielić na **drzewowe** (wchodzące w skład drzewa BFS) oraz **poprzeczne**, które łączą pewne dwa wierzchołki z różnych gałęzi/warstw drzewa BFS (w BFS nie występują krawędzie typu “do przodu” ani “wsteczne” w sensie klasyfikacji DFS).
-
-> **Zastosowania BFS:** Oprócz obliczania odległości w grafie nieważonym (problem najkrótszej ścieżki), BFS pozwala także m.in.:
->
-> * wyznaczać spójne składowe grafu (każde drzewo BFS to jedna składowa),
-> * znaleźć cykl o minimalnej długości (jeśli podczas BFS natrafimy na krawędź poprzeczną, łączy ona dwa wierzchołki oddalone od $s$ o odległości $d$ i $d$ lub $d$ i $d+1$, co daje cykl długości $2d+1$ lub $2d+2$),
-> * znaleźć graf powiązań o odległości $\le 2$ (domknięcie przekątne relacji) – wystarczy przeprowadzić BFS z każdym wierzchołkiem jako startowym (alternatywnie mnożenie macierzy sąsiedztwa),
-> * stwierdzić dwudzielność grafu – jeśli podczas BFS uda się pokolorować graf dwoma kolorami warstwami (naprzemiennie), to graf jest dwudzielny. Jeśli pojawi się krawędź łącząca dwa wierzchołki z tej samej warstwy, to graf nie jest dwudzielny (występuje cykl nieparzysty).
-
-### Algorytm DFS (przeszukiwanie w głąb)
-
-DFS korzysta ze stosu (jawnie lub poprzez rekurencję) i eksploruje graf **jak najgłębiej**, cofając się dopiero, gdy dotrze do końca ścieżki. W efekcie DFS zagłębia się od wierzchołka startowego tak długo, aż napotka wierzchołek bez nieodwiedzonych sąsiadów, wtedy się cofa i szuka pierwszego napotkanego jeszcze nieodwiedzonego sąsiada, itd.
-
-**Schemat (rekurencyjny):**
-
-1. Oznacz wszystkie wierzchołki jako nieodwiedzone (białe) i wyzeruj licznik czasu.
-2. Dla każdego wierzchołka $u$:
-
-   * Jeśli $u$ jest nieodwiedzony, wykonaj wywołanie `DFSVisit(u)`:
-
-     1. Zaznacz $u$ jako odwiedzony (szary), zapisz czas odkrycia $u.d =$ kolejny czas++.
-     2. *Przetwórz* $u$ (np. odnotuj w porządku pre-order).
-     3. Dla każdego sąsiada $v$ wierzchołka $u$:
-
-        * Jeśli $v$ jest biały (nieodkryty) – zapisz $p(v)=u$ i wykonaj rekurencyjnie `DFSVisit(v)` (zagłębienie się krawędzią drzewową).
-        * (Jeśli $v$ jest szary lub czarny – krawędź $(u,v)$ nie jest drzewowa; klasyfikacja poniżej.)
-     4. Oznacz $u$ jako przetworzony (czarny); zapisz czas zakończenia $u.f =$ kolejny czas++.
-3. Koniec – wszystkie osiągalne wierzchołki zostały odwiedzone; ewentualnie DFS podejmie się ponownie z innego wierzchołka, aby przetworzyć kolejną składową niespójnego grafu.
-
-**Złożoność:** Podobnie jak BFS, DFS odwiedza każdą krawędź i wierzchołek stałą liczbę razy; złożoność wynosi $O(|V| + |E|)$.
-
-W grafach **nieskierowanych** DFS generuje tylko krawędzie drzewowe i wsteczne. W grafach **skierowanych** mogą wystąpić wszystkie cztery rodzaje krawędzi.
-
-Dla dowolnych dwóch wierzchołków $u, v$ zachodzi ciekawa własność tzw. **struktury nawiasowej**: ich przedziały czasowe przetwarzania albo są rozłączne, albo jeden zawiera się w drugim. To oznacza, że jeśli $u$ zostanie odkryty przed $v$ ($u.d < v.d$), to albo zakończy się przetwarzanie $u$ przed odkryciem $v$ ($u.f < v.d$), albo $u$ zakończy się po $v$ ($u.d < v.d < v.f < u.f$). Na tej podstawie można wykrywać cykle, tworzyć porządek topologiczny i znajdować silnie spójne komponenty.
-
-**Zastosowania DFS:**
-
-* **Sortowanie topologiczne** – wykonywane jest przez DFS w grafach acyklicznych skierowanych (DAG). Wystarczy wykonać DFS i zapisać wierzchołki w kolejności malejących czasów ukończenia $v.f$ – otrzymany porządek jest topologicznym uszeregowaniem DAG.
-* **Silnie spójne składowe** – można wykryć dwukrotnie wykonując DFS (algorytm Kosaraju) albo jednym przebiegiem zmodyfikowanego DFS (algorytm Tarjana). Oba algorytmy wykraczają jednak poza podstawowy zakres.
-* **Mosty i punkty artykulacji** – za pomocą DFS można w czasie liniowym wykryć wszystkie mosty i punkty artykulacji grafu. Wymaga to analizy drzew DFS i krawędzi wstecznych (algorytm oparty na tzw. wartościach low-link). Jest to zagadnienie bardziej złożone, omawiane zwykle na wyższych ocenach.
-* **Rozwiązywanie zagadnień typu labirynt** – DFS nadaje się do przeszukiwania grafu w celu znalezienia ścieżki z punktu A do B (niekoniecznie najkrótszej, ale istniejącej). W praktyce jednak BFS częściej zapewnia ścieżki optymalne (najkrótsze).
 
 
 ## Planarność
 
 * **Graf planarny:** graf jest *planarny*, jeśli można go narysować na płaszczyźnie tak, aby żadne krawędzie się nie przecinały (poza wierzchołkami, w których się spotykają). Taki rysunek nazywamy **rysunkiem płaskim** grafu. Grafy planarne to np. wszystkie drzewa, grafy planarnych wielościanów (sześcian jako graf $Q\_3$, itp.). Graf, którego nie da się narysować bez przecięć, nazywa się *nieplanarny*.
 
-* **Twierdzenie Kuratowskiego (charakteryzacja planarności):** graf $G$ jest planarny **wtedy i tylko wtedy**, gdy nie zawiera podgrafu *homeomorficznego* z grafem $K\_5$ (kompletnym grafem na 5 wierzchołkach) ani z grafem $K\_{3,3}$ (kompletnym dwudzielnym na 3+3 wierzchołkach). Homeomorficzne oznacza tu, że z $G$ można otrzymać $K\_5$ lub $K\_{3,3}$ przez *kurczenie* (ściśnięcie) pewnych krawędzi i ewentualne pomijanie zbędnych wierzchołków stopnia 2. W praktyce $K\_5$ i $K\_{3,3}$ to tzw. **grafy Kuratowskiego** – oba są nieplanarne i każda inna nieplanarność zawiera je w pewnej „ukrytej” formie. Przykładowo graf Petersena jest nieplanarny, bo zawiera podgraf homeomorficzny $K\_{3,3}$.
+* **Twierdzenie Kuratowskiego:** graf $G$ jest planarny **wtedy i tylko wtedy**, gdy nie zawiera podgrafu *homeomorficznego* z grafem $K\_5$ (kompletnym grafem na 5 wierzchołkach) ani z grafem $K\_{3,3}$ (kompletnym dwudzielnym na 3+3 wierzchołkach). Homeomorficzne oznacza tu, że z $G$ można otrzymać $K\_5$ lub $K\_{3,3}$ przez *kurczenie* (ściśnięcie) pewnych krawędzi i ewentualne pomijanie zbędnych wierzchołków stopnia 2. W praktyce $K\_5$ i $K\_{3,3}$ to tzw. **grafy Kuratowskiego** – oba są nieplanarne i każda inna nieplanarność zawiera je w pewnej „ukrytej” formie. Przykładowo graf Petersena jest nieplanarny, bo zawiera podgraf homeomorficzny $K\_{3,3}$.
 
 * **Twierdzenie Eulera dla grafów planarnych:** dla każdego spójnego grafu planarnego zachodzi zależność między liczbą wierzchołków $n$, krawędzi $m$ i ścian $f$ w dowolnym jego płaskim narysowaniu: **$n - m + f = 2$**. (Tutaj *ściany* to obszary płaszczyzny rozdzielone krawędziami grafu, w tym jedna *ściana nieskończona* obejmująca „zewnętrzny” obszar poza rysunkiem grafu.) Wniosek: w każdym rysunku spójnego grafu planarnego liczby $n,m,f$ spełniają powyższy związek i w szczególności $f$ jest jednoznacznie wyznaczone przez $n$ i $m$. 
 
