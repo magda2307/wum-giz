@@ -1,0 +1,155 @@
+\documentclass[12pt, a4paper]{report}
+
+% --- PAZKI I KODOWANIE ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{csquotes}
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=25mm,
+ bottom=25mm,
+}
+
+% --- PAKIETY DO BIBLIOGRAFII I LINKÓW ---
+\usepackage[backend=biber, style=numeric, sorting=none]{biblatex}
+\addbibresource{bibliography.bib} % Tu podpinamy plik bibliografii
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor=blue,
+}
+
+% --- TYTUŁ ROZDZIAŁU ---
+\title{Rozdział 1: Wstęp}
+\author{Autor Pracy}
+\date{\today}
+
+\begin{document}
+
+% \maketitle % Opcjonalne, w pełnej pracy rozdział nie ma osobnej strony tytułowej
+
+\chapter{Wstęp}
+
+\section{Kontekst problemu i znaczenie badań}
+
+Zarządzanie populacją zwierząt domowych w aglomeracjach miejskich stanowi jedno z najbardziej złożonych wyzwań współczesnej polityki komunalnej oraz etyki społecznej. Według danych American Society for the Prevention of Cruelty to Animals (ASPCA), do schronisk w Stanach Zjednoczonych trafia rocznie około 6,3 miliona zwierząt towarzyszących \cite{aspca2023}. Choć wskaźniki eutanazji sukcesywnie maleją, problem tzw. \textit{długoterminowego pobytu} (ang. Length of Stay - LOS) pozostaje krytycznym obciążeniem dla systemów opieki nad zwierzętami.
+
+Szczególnym przypadkiem badawczym w tym obszarze jest miasto Austin w stanie Teksas. W 2010 roku Rada Miasta przyjęła uchwałę \textit{No Kill Implementation Plan}, zobowiązującą miejskie schronisko (Austin Animal Center - AAC) do utrzymania wskaźnika „Live Release Rate” na poziomie minimum 90\% \cite{austin2010}. Polityka ta, choć pożądana społecznie, rodzi istotne wyzwania operacyjne. W modelu, w którym eutanazja ze względu na brak miejsca jest zabroniona, zwierzęta trudne do adopcji mogą przebywać w placówce miesiącami. Literatura przedmiotu wskazuje, że długotrwała izolacja prowadzi do zjawiska „stresu kennlowego” (\textit{kennel stress}), który skutkuje pogorszeniem stanu behawioralnego zwierzęcia, paradoksalnie zmniejszając jego szanse na adopcję i tworząc błędne koło \cite{hennessy2013}.
+
+W tradycyjnym modelu zarządzania schroniskiem, decyzje dotyczące alokacji zasobów (np. promocja w mediach, interwencje behawiorysty) podejmowane są często reaktywnie i w oparciu o intuicję personelu. Niniejsza praca proponuje zmianę paradygmatu na podejście oparte na danych (\textit{data-driven}). Wykorzystanie zaawansowanych metod uczenia maszynowego (Machine Learning) pozwala na obiektywizację procesu decyzyjnego. Poprzez analizę wieloletnich trendów adopcyjnych możliwe staje się nie tylko zidentyfikowanie kluczowych determinant adopcji, ale także predykcja czasu pobytu zwierzęcia już w momencie jego przyjęcia (intake). Pozwala to na wczesną interwencję i optymalizację ścieżki adopcyjnej \cite{isaksen2019}.
+
+\section{Cel pracy i zakres badań}
+
+Głównym celem pracy jest zaprojektowanie, implementacja oraz walidacja kompletnego systemu analitycznego, wspierającego proces adopcyjny w schroniskach typu \textit{No-Kill}. Cel ten realizowany jest poprzez analizę historycznych danych operacyjnych Austin Animal Center z lat 2013–2025. 
+
+Wymiar badawczy pracy koncentruje się na stworzeniu modeli predykcyjnych, zdolnych do oszacowania prawdopodobieństwa adopcji oraz przewidywanego czasu oczekiwania na nowy dom. Wymiar inżynierski obejmuje budowę zautomatyzowanego potoku przetwarzania danych (pipeline MLOps), który zapewnia replikowalność wyników i możliwość wdrożenia modelu w środowisku produkcyjnym.
+
+Zakres pracy obejmuje:
+\begin{itemize}
+    \item Integrację danych z systemów ewidencyjnych schroniska (zbiory \textit{Intakes} i \textit{Outcomes}) oraz wzbogacenie ich o zewnętrzne dane meteorologiczne i kalendarzowe.
+    \item Przeprowadzenie zaawansowanej inżynierii cech (\textit{Feature Engineering}), w tym transformację danych tekstowych (opisy ras i umaszczenia) na format numeryczny.
+    \item Budowę i optymalizację modeli uczenia maszynowego ze szczególnym uwzględnieniem algorytmów opartych na gradiencie (XGBoost, CatBoost).
+    \item Implementację warstwy wyjaśnialności modelu (Explainable AI - XAI), co jest kluczowe dla zaufania użytkowników końcowych (wolontariuszy).
+\end{itemize}
+
+\section{Pytania badawcze i hipotezy}
+
+W oparciu o przegląd literatury oraz wstępną eksplorację danych, sformułowano następujące pytania badawcze:
+
+\begin{enumerate}
+    \item \textbf{PB1:} Które zmienne (cechy fenotypowe, historia przyjęcia, czynniki sezonowe) stanowią najsilniejsze predyktory czasu oczekiwania na adopcję w środowisku miejskim?
+    \item \textbf{PB2:} Czy zastosowanie złożonych modeli zespołowych (Ensemble Methods) pozwala na uzyskanie istotnie wyższej jakości predykcji w porównaniu do klasycznych metod statystycznych (Regresja Logistyczna, Drzewa Decyzyjne)?
+    \item \textbf{PB3:} W jakim stopniu czynniki wpływające na adopcję różnią się pomiędzy populacją psów i kotów oraz czy trendy te uległy zmianie na przestrzeni ostatniej dekady (2013-2025)?
+\end{enumerate}
+
+Dla powyższych pytań postawiono następujące hipotezy badawcze:
+
+\begin{itemize}
+    \item \textbf{H1:} Typ przyjęcia zwierzęcia (np. \textit{Owner Surrender} vs \textit{Stray}) jest silniejszym predyktorem czasu adopcji niż cechy fizyczne takie jak umaszczenie czy wielkość, ze względu na dostępność informacji o historii behawioralnej zwierzęcia.
+    \item \textbf{H2:} Modele oparte na algorytmie Gradient Boosting (np. XGBoost) osiągną wynik metryki AUC-ROC wyższy o co najmniej 0.05 punktu w porównaniu do modelu bazowego (Regresji Logistycznej), dzięki zdolności do modelowania nieliniowych zależności między rasą a szansą adopcji \cite{chen2016}.
+    \item \textbf{H3:} Sezonowość adopcji wykazuje silną asymetrię gatunkową; czas przebywania w schronisku dla kotów jest ściśle skorelowany z biologicznym cyklem rozrodczym (tzw. "Kitten Season"), podczas gdy dla psów jest on bardziej zależny od czynników społecznych (święta, wakacje).
+\end{itemize}
+
+\section{Wkład własny i zastosowane technologie}
+
+Niniejsza praca wyróżnia się na tle standardowych analiz statystycznych zastosowaniem nowoczesnych praktyk inżynierii oprogramowania (MLOps). Autorski wkład obejmuje nie tylko analizę danych, ale budowę pełnego, reprodukowalnego środowiska badawczego.
+
+Do kluczowych elementów wkładu własnego należą:
+\begin{enumerate}
+    \item **Architektura MLOps:** Implementacja środowiska w oparciu o konteneryzację (\textbf{Docker}) oraz system wersjonowania danych (\textbf{DVC} - Data Version Control). Rozwiązanie to eliminuje problem „it works on my machine” i umożliwia śledzenie ewolucji modeli w czasie.
+    \item **Zaawansowana inżynieria cech:** Opracowanie autorskich algorytmów grupowania ras (zredukowanie ponad 1000 etykiet do grup kynologicznych AKC) oraz ekstrakcja cech z dat (cykliczność sezonowa).
+    \item **Interaktywny Dashboard:** Projekt i implementacja aplikacji webowej w technologii \textbf{Streamlit}, która demokratyzuje dostęp do wyników modelu. Narzędzie to pozwala wolontariuszom na symulację scenariuszy „co-jeśli” (np. „Jak zmienią się szanse adopcji, jeśli wykonamy lepsze zdjęcia?”).
+    \item **Analiza wyjaśnialności (XAI):** Zastosowanie metody wartości Shapleya (\textbf{SHAP}) do dekompozycji predykcji modelu, co pozwala na identyfikację systemowych biasów (uprzedzeń) w procesie adopcyjnym \cite{lundberg2017}.
+\end{enumerate}
+
+\section{Struktura pracy}
+
+Praca została podzielona na część teoretyczną, inżynierską oraz analityczną. Rozdział 2 zawiera przegląd literatury dotyczącej zarządzania schroniskami oraz zastosowań AI w dobrostanie zwierząt. Rozdział 3 opisuje architekturę systemu i stos technologiczny. Rozdziały 4-7 dokumentują proces przygotowania danych i inżynierii cech. Rozdziały 8-10 prezentują wyniki modelowania, walidację hipotez oraz analizę wyjaśnialności. Pracę kończy dyskusja wyników oraz wnioski wdrożeniowe dla Austin Animal Center.
+
+% --- BIBLIOGRAFIA (PRZYKŁAD PLIKU .bib) ---
+% Poniższą sekcję należy normalnie umieścić w pliku bibliography.bib
+% Tutaj używamy środowiska filecontents tylko dla celów demonstracyjnych kompilacji
+
+\begin{filecontents}{bibliography.bib}
+@online{aspca2023,
+  author = {{ASPCA}},
+  title = {Pet Statistics: Shelter Intake and Surrender},
+  year = {2023},
+  url = {https://www.aspca.org/helping-people-pets/shelter-intake-and-surrender/pet-statistics},
+  urldate = {2025-10-15}
+}
+
+@article{hennessy2013,
+  author = {Hennessy, Michael B.},
+  title = {Hypothalamic-pituitary-adrenal axis activity in shelter dogs: A review},
+  journal = {Applied Animal Behaviour Science},
+  volume = {148},
+  number = {3},
+  pages = {211--219},
+  year = {2013},
+  publisher = {Elsevier}
+}
+
+@techreport{austin2010,
+  author = {{Austin City Council}},
+  title = {No Kill Implementation Plan},
+  institution = {City of Austin},
+  year = {2010},
+  type = {Resolution No. 20100311-037}
+}
+
+@inproceedings{chen2016,
+  author = {Chen, Tianqi and Guestrin, Carlos},
+  title = {XGBoost: A Scalable Tree Boosting System},
+  booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  year = {2016},
+  pages = {785--794}
+}
+
+@inproceedings{lundberg2017,
+  author = {Lundberg, Scott M. and Lee, Su-In},
+  title = {A Unified Approach to Interpreting Model Predictions},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume = {30},
+  year = {2017}
+}
+
+@article{isaksen2019,
+  author = {Isaksen, Keely E. and Ytreberg, Espen},
+  title = {Prediction of dog adoption success using machine learning},
+  journal = {Journal of Applied Animal Welfare Science},
+  volume = {22},
+  year = {2019}
+}
+\end{filecontents}
+
+\printbibliography[title={Bibliografia do Rozdziału 1}]
+
+\end{document}
